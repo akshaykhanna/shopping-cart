@@ -12,4 +12,9 @@ public class Customer {
     public Cart cart() {
         return this.cart;
     }
+
+    public void addItemToCart(Product product, int quantityToAdd) {
+        this.cart.addProduct(product, quantityToAdd);
+    }
+
 }

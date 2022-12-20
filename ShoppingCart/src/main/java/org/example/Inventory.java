@@ -2,6 +2,8 @@ package org.example;
 
 import java.util.ArrayList;
 
+import static java.util.Objects.isNull;
+
 public class Inventory {
 
     private ArrayList<InventoryProduct> products;
@@ -10,38 +12,39 @@ public class Inventory {
         this.products = new ArrayList<>();
     }
 
+    public boolean hasProduct(String pid) {
+        return !isNull(findByProduct(product -> product.id() == pid));
+    }
+
     public boolean hasProductByName(String prodName) {
-        for (var product: this.products) {
-            if(product.name() == prodName)
-                return true;
-        }
-        return false;
+        return !isNull(findByProduct(product -> product.name() == prodName));
     }
 
     public InventoryProduct getProduct(String pid) {
-        for (var product: this.products) {
-            if(product.id() == pid)
-                return product;
-        }
-        return null;
-    }
-    public InventoryProduct getProductByName(String prodName) {
-        for (var product: this.products) {
-            if(product.name() == prodName)
-                return product;
-        }
-        return null;
+        return (InventoryProduct) findByProduct(product -> product.id() == pid);
     }
 
-    public void decreaseInventoryOfAProduct(String pid, int quantity) {
-        this.getProduct(pid).decreaseQtyBy(quantity);
+    public InventoryProduct getProductByName(String prodName) {
+        return (InventoryProduct) findByProduct(product -> product.name() == prodName);
     }
 
     public void addProduct(InventoryProduct inventoryProduct) {
         this.products.add(inventoryProduct);
     }
 
-    public boolean hasProduct(String pid) {
-        return this.getProduct(pid) != null;
+    public void decreaseInventoryOfAProduct(String pid, int quantity) {
+        this.getProduct(pid).decreaseQtyBy(quantity);
     }
+
+    private Product findByProduct(PredicateProduct predicate) {
+        for (var product : this.products) {
+            if (predicate.matches(product)) return product;
+        }
+        return null;
+    }
+
+    interface PredicateProduct {
+        boolean matches(Product product);
+    }
+
 }

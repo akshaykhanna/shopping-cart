@@ -1,37 +1,21 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import static java.util.Objects.isNull;
 
 public class Cart {
-    private List<CartProduct> products;
+    private ArrayList<CartProduct> products;
 
     public Cart() {
         this.products = new ArrayList<>();
     }
 
-    public void addProduct(String pid, String prodName, int quantity, double price) {
-        if (this.hasProduct(pid)) {
-            this.getProduct(pid).increaseQtyBy(quantity);
+    public void addProduct(Product product, int quantityToAdd) {
+        if (this.hasProduct(product.id())) {
+            this.getProduct(product.id()).increaseQtyBy(quantityToAdd);
         } else
-            this.products.add(new CartProduct(pid, prodName, price, quantity));
-    }
-
-    private CartProduct getProduct(String pid) {
-        for (var product : this.products) {
-            if (product.id() == pid)
-                return product;
-        }
-        return null;
-    }
-
-    private boolean hasProduct(String pid) {
-        for (var product : this.products) {
-            if (product.id() == pid)
-                return true;
-        }
-        return false;
-
+            this.products.add(new CartProduct(product.id(), product.name(), product.price(), quantityToAdd));
     }
 
     public double getTotalPrice() {
@@ -40,5 +24,25 @@ public class Cart {
             totalPrice += cartProduct.totalPrice();
         }
         return totalPrice;
+    }
+
+    private CartProduct getProduct(String pid) {
+        return (CartProduct) findByProduct(product -> product.id() == pid);
+    }
+
+    private boolean hasProduct(String pid) {
+        return !isNull(findByProduct(product -> product.id() == pid));
+
+    }
+
+    private Product findByProduct(Inventory.PredicateProduct predicate) {
+        for (var product : this.products) {
+            if (predicate.matches(product)) return product;
+        }
+        return null;
+    }
+
+    interface PredicateProduct {
+        boolean matches(Product product);
     }
 }

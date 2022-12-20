@@ -7,24 +7,25 @@ public class ShoppingStore {
         this.inventory = inventory;
     }
 
-    public boolean addItemByName(Customer customer, String prodName, int quantity) {
+    public boolean addItemByName(Customer customer, String prodName, int quantityToAdd) {
         if (inventory.hasProductByName(prodName)) {
-            Product inventoryProduct = inventory.getProductByName(prodName);
-            inventory.decreaseInventoryOfAProduct(inventoryProduct.id(), quantity);
-            customer.cart().addProduct(inventoryProduct.id(), prodName, quantity, inventoryProduct.price());
+            updateInventoryAndCustomerCart(customer, quantityToAdd, inventory.getProductByName(prodName));
             return true;
-        } else
-            return false;
+        }
+        return false;
     }
 
-    public boolean addItem(Customer customer, String pid, int quantity) {
+    public boolean addItem(Customer customer, String pid, int quantityToAdd) {
         if (inventory.hasProduct(pid)) {
-            Product inventoryProduct = inventory.getProduct(pid);
-            inventory.decreaseInventoryOfAProduct(inventoryProduct.id(), quantity);
-            customer.cart().addProduct(inventoryProduct.id(), inventoryProduct.name(), quantity, inventoryProduct.price());
+            updateInventoryAndCustomerCart(customer, quantityToAdd, inventory.getProduct(pid));
             return true;
-        } else
-            return false;
+        }
+        return false;
+    }
+
+    private void updateInventoryAndCustomerCart(Customer customer, int quantityToAdd, Product product) {
+        inventory.decreaseInventoryOfAProduct(product.id(), quantityToAdd);
+        customer.addItemToCart(product, quantityToAdd);
     }
 
     public double amountToBePaidBy(Customer customer) {
