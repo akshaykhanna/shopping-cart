@@ -51,4 +51,4 @@ And the total sales tax amount for the shopping cart should equal 35.00
 And the shopping cart’s total price should equal 314.96
 
 ## Purposed Solution Design 
-
+[Thinking Solution](https://github.com/akshaykhanna/shopping-cart/blob/main/thinking-solution.txt)
