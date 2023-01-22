@@ -1,0 +1,79 @@
+- Add products in shopping cart
+  - addProductCart
+        - Input
+            - Pid/name
+            - Qty
+        - Compute
+            - Inventory
+                - Pid, qty
+                - Decrease qty
+            - Cart
+                - Adding Product with request qty
+- Display total price of cart /
+    - Cart
+        - List of products
+    - Bill
+        - Calculate price of this products
+- Able to additional products of same kind  /
+    - Check Inventory
+    - Decrease Inventory
+    - Add product cart
+    - Shopping Store
+- Add multiple types of products /
+    - Check Inventory
+    - Decrease Inventory
+    - Add product cart
+    - Shopping Store
+- Calculate & display sale tax 
+    - List products from cart
+    - Billing 
+
+
+Actor/ Entity
+- Product
+    - Id,
+    - Name 
+    - Price
+    - displayProduct()
+        - 
+- ListProducts / Products (Optinol)
+    - [Axe, Dove]
+- InventoryProduct (Product)
+    - Quantity
+    - totaCost()
+        - Qty * prod.price
+- Inventory
+    - [Axe:50, Dove:100]
+    - ListOF InventoryProduct
+    - addProduct()
+    - removeProduct()
+- CartProduct(Product)
+    - Quantity
+    - totalPrice()
+        - Qty * this.price
+- Cart
+    - ListOfCartProduct
+    - addPrdouc()
+- ShoppingStore
+    - addItmes
+    - getTotalPrice
+    - removeItems
+    - finalPrice = total price + sale tax
+    - updateInventory
+- Bill
+    - Cart
+    - saleTaxRate = 12.5
+    - setSaleTaxRate / getter
+    - calcSaleTaxRate()
+    - calcTotlaAmountTo Pay()
+    - Calulate prices
+- Customer
+    - Cart
+    - Name
+    - Mob Non
+
+100 dove product
+InvProd = {dove, qty:98}
+
+Cart
+CartProd ={dove, qty:2}
